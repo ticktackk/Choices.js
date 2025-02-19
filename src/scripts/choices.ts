@@ -1393,15 +1393,19 @@ class Choices {
     const { config } = this;
     const { maxItemCount, maxItemText } = config;
 
-    if (!config.singleModeForMultiSelect && maxItemCount > 0 && maxItemCount <= this._store.items.length) {
-      this.choiceList.element.replaceChildren('');
-      this._notice = undefined;
-      this._displayNotice(
-        typeof maxItemText === 'function' ? maxItemText(maxItemCount) : maxItemText,
-        NoticeTypes.addChoice,
-      );
+    if (!config.singleModeForMultiSelect) {
+      if (maxItemCount > 0 && maxItemCount === this._store.items.length) {
+        this.choiceList.element.replaceChildren('');
+        this._notice = undefined;
+        this._displayNotice(
+          typeof maxItemText === 'function' ? maxItemText(maxItemCount) : maxItemText,
+          NoticeTypes.addChoice,
+        );
 
-      return false;
+        return false;
+      }
+
+      this._clearNotice();
     }
 
     return true;

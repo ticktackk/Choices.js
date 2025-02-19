@@ -4394,11 +4394,14 @@
         Choices.prototype._canAddItems = function () {
             var config = this.config;
             var maxItemCount = config.maxItemCount, maxItemText = config.maxItemText;
-            if (!config.singleModeForMultiSelect && maxItemCount > 0 && maxItemCount <= this._store.items.length) {
-                this.choiceList.element.replaceChildren('');
-                this._notice = undefined;
-                this._displayNotice(typeof maxItemText === 'function' ? maxItemText(maxItemCount) : maxItemText, NoticeTypes.addChoice);
-                return false;
+            if (!config.singleModeForMultiSelect) {
+                if (maxItemCount > 0 && maxItemCount === this._store.items.length) {
+                    this.choiceList.element.replaceChildren('');
+                    this._notice = undefined;
+                    this._displayNotice(typeof maxItemText === 'function' ? maxItemText(maxItemCount) : maxItemText, NoticeTypes.addChoice);
+                    return false;
+                }
+                this._clearNotice();
             }
             return true;
         };
